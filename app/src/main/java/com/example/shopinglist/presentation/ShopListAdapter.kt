@@ -21,9 +21,26 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
         val tvCount = view.findViewById<TextView>(R.id.tv_count)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        val itemShopList = shopList[position]
+        return  if (itemShopList.enabled)
+                    R.layout.item_shop_enabled
+                else
+                    R.layout.item_shop_disabled
+
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.item_shop_enabled,
+        val view: View
+        if (viewType == R.layout.item_shop_enabled)
+            view = LayoutInflater.from(parent.context).inflate(
+                R.layout.item_shop_enabled,
+                parent,
+                false
+            )
+        else
+            view = LayoutInflater.from(parent.context).inflate(
+            R.layout.item_shop_disabled,
             parent,
             false
         )
@@ -41,5 +58,9 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
 
     override fun getItemCount(): Int {
        return shopList.size
+    }
+
+    companion object{
+        const val MAX_PULL_SIZE = 5
     }
 }
