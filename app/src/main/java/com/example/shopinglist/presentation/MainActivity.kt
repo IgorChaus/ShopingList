@@ -35,14 +35,13 @@ class MainActivity : AppCompatActivity() {
             recycledViewPool.setMaxRecycledViews(R.layout.item_shop_disabled
                 ,ShopListAdapter.MAX_PULL_SIZE)
         }
-        /*shopListAdapter.onShopItemLongClickListener = object: ShopListAdapter.OnShopItemLongClickListener{
-            override fun onShopItemLongClick(shopItem: ShopItem) {
-                viewModel.changeEnableState(shopItem)
-            }
-        }*/
 
         shopListAdapter.onShopItemLongClickListener = {
-                viewModel.changeEnableState(it)
+            viewModel.changeEnableState(it)
+        }
+
+        shopListAdapter.onShopItemClickListener = {
+            Log.i("MyTag", "onClick ${it.toString()}")
         }
 
     }
