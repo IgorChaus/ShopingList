@@ -1,9 +1,11 @@
 package com.example.shopinglist.presentation
 
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopinglist.R
 import com.example.shopinglist.domain.ShopItem
@@ -18,6 +20,8 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
 
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
+    var onSwipeItemClickListener: ((ShopItem) -> Unit)? = null
+
 
 
     class ShopItemViewHolder(view: View): RecyclerView.ViewHolder(view){
@@ -62,6 +66,7 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
         holder.itemView.setOnClickListener {
             onShopItemClickListener?.invoke(shopItem)
         }
+
     }
 
     override fun getItemCount(): Int {
