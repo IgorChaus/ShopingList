@@ -16,7 +16,9 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
             notifyDataSetChanged()
         }
 
-    var onShopItemLongClickListener: OnShopItemLongClickListener? = null
+ //   var onShopItemLongClickListener: OnShopItemLongClickListener? = null
+    var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
+
 
     class ShopItemViewHolder(view: View): RecyclerView.ViewHolder(view){
         val tvName = view.findViewById<TextView>(R.id.tv_name)
@@ -54,7 +56,8 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
         holder.tvName.text = shopItem.name
         holder.tvCount.text = shopItem.count.toString()
         holder.itemView.setOnLongClickListener {
-            onShopItemLongClickListener?.onShopItemLongClick(shopItem)
+  //          onShopItemLongClickListener?.onShopItemLongClick(shopItem)
+            onShopItemLongClickListener?.invoke(shopItem)
             true
         }
     }
