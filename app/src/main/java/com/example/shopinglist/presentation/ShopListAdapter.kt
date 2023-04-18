@@ -3,34 +3,21 @@ package com.example.shopinglist.presentation
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import com.example.shopinglist.R
 import com.example.shopinglist.domain.ShopItem
 
-class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
-
-    var shopList = listOf<ShopItem>()
-        set(value){
-            field = value
-            notifyDataSetChanged()
-        }
+class ShopListAdapter: ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallBack()) {
 
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
 
-
-    class ShopItemViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val tvName = view.findViewById<TextView>(R.id.tv_name)
-        val tvCount = view.findViewById<TextView>(R.id.tv_count)
-    }
-
     override fun getItemViewType(position: Int): Int {
-        val itemShopList = shopList[position]
+        val itemShopList = getItem(position)
         return  if (itemShopList.enabled)
-                    R.layout.item_shop_enabled
-                else
-                    R.layout.item_shop_disabled
+            R.layout.item_shop_enabled
+        else
+            R.layout.item_shop_disabled
 
     }
 
@@ -44,29 +31,25 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
             )
         else
             view = LayoutInflater.from(parent.context).inflate(
-            R.layout.item_shop_disabled,
-            parent,
-            false
-        )
+                R.layout.item_shop_disabled,
+                parent,
+                false
+            )
         return ShopItemViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
-        val shopItem = shopList[position]
+        val shopItem = getItem(position)
         holder.tvName.text = shopItem.name
         holder.tvCount.text = shopItem.count.toString()
         holder.itemView.setOnLongClickListener {
-  //          onShopItemLongClickListener?.onShopItemLongClick(shopItem)
             onShopItemLongClickListener?.invoke(shopItem)
             true
         }
         holder.itemView.setOnClickListener {
             onShopItemClickListener?.invoke(shopItem)
         }
-    }
 
-    override fun getItemCount(): Int {
-       return shopList.size
     }
 
     companion object{
