@@ -1,7 +1,6 @@
 package com.example.shopinglist.presentation
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,11 +16,10 @@ import com.example.shopinglist.domain.ShopItem
 import com.google.android.material.textfield.TextInputLayout
 
 
-
-
 class ShopItemFragment: Fragment() {
 
     private lateinit var viewModel: ShopItemViewModel
+    private lateinit var onEditingFinishedListener: OnEditingFinishedListener
 
     private lateinit var tilName: TextInputLayout
     private lateinit var tilCount: TextInputLayout
@@ -31,6 +29,20 @@ class ShopItemFragment: Fragment() {
 
     private var screenMode: String = MODE_UNKNOWN
     private var shopItemId: Int = ShopItem.UNDEFIND_ID
+
+
+    interface OnEditingFinishedListener{
+        fun onEditingFinished()
+    }
+
+    override fun onAttach(context: Context){
+        super.onAttach(context)
+        if (context is OnEditingFinishedListener){
+            onEditingFinishedListener = context
+        }else {
+            throw RuntimeException("Activity must implement listener")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +89,7 @@ class ShopItemFragment: Fragment() {
         }
 
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            activity?.onBackPressed()
+            onEditingFinishedListener.onEditingFinished()
         }
     }
 
