@@ -68,7 +68,6 @@ class ShopItemFragment: Fragment() {
         observerViewModel()
     }
 
-
         private fun observerViewModel() {
         viewModel.errorInputCount.observe(viewLifecycleOwner) {
             val message = if (it) {
@@ -171,31 +170,12 @@ class ShopItemFragment: Fragment() {
         buttonSave = view.findViewById(R.id.save_button)
     }
 
-
     companion object {
         private const val SCREEN_MODE = "extra_mode"
         private const val SHOP_ITEM_ID = "extra_shop_item_id"
         private const val MODE_EDIT = "mode_edit"
         private const val MODE_ADD = "mode_add"
         private const val MODE_UNKNOWN = ""
-
-     /*   fun newInstanceAddItem(): ShopItemFragment{
-            val args = Bundle()
-            args.putString(SCREEN_MODE, MODE_ADD)
-            val fragment = ShopItemFragment()
-            fragment.arguments = args
-            return fragment
-        }*/
-
-        /*fun newInstanceAddItem(): ShopItemFragment{
-            val args = Bundle().apply{
-                putString(SCREEN_MODE, MODE_ADD)
-            }
-            val fragment = ShopItemFragment().apply{
-                arguments = args
-            }
-            return fragment
-        }*/
 
         fun newInstanceAddItem(): ShopItemFragment {
             return ShopItemFragment().apply {
@@ -215,4 +195,5 @@ class ShopItemFragment: Fragment() {
         }
 
     }
+
 }
