@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.shopinglist.R
 import com.example.shopinglist.databinding.FragmentShopItemBinding
 import com.example.shopinglist.domain.ShopItem
 

@@ -9,12 +9,11 @@ import androidx.room.RoomDatabase
 abstract class AppDataBase: RoomDatabase() {
 
     abstract fun shopListDao(): ShopListDao
-    abstract val age: String
 
     companion object{
         private var INSTANCE: AppDataBase? = null
         private var LOCK = Any()
-        private const val DB_NAME = "shopIrem.db"
+        private const val DB_NAME = "shop_item.db"
 
         fun getInstense(application: Application): AppDataBase{
 
