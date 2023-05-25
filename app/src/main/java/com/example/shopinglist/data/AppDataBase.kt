@@ -30,7 +30,10 @@ abstract class AppDataBase: RoomDatabase() {
                     application,
                     AppDataBase::class.java,
                     DB_NAME
-                ).build()
+                )
+                    //Позволяет работать на главном потоке. Используется только для тестирования
+                    .allowMainThreadQueries()
+                    .build()
                 INSTANCE = db
                 return db
             }

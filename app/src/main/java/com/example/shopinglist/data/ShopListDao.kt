@@ -12,6 +12,10 @@ interface ShopListDao {
     @Query("SELECT * FROM shop_items")
     fun getShopList(): LiveData<List<ShopItemDbModel>>
 
+//    Можно вернуть просто List. ArrayList возвращать не умеет
+//    @Query("SELECT * FROM shop_items")
+//    fun getShopList(): List<ShopItemDbModel>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     //Если у нас будет добавлен Item с тем же самым id, то он перезапимшется в таблице
     fun addShopItem(shopItemDbModel: ShopItemDbModel)
