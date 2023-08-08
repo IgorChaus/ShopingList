@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.shopinglist.R
 import com.example.shopinglist.databinding.FragmentShopItemBinding
 import com.example.shopinglist.domain.ShopItem
 
@@ -62,27 +61,11 @@ class ShopItemFragment: Fragment() {
         addTextChangeListeners()
         launchRightMode()
         observerViewModel()
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
     }
 
-        private fun observerViewModel() {
-        viewModel.errorInputCount.observe(viewLifecycleOwner) {
-            val message = if (it) {
-                getString(R.string.error_input_count)
-            } else {
-                null
-            }
-            binding.tilCount.error = message
-        }
-
-        viewModel.errorInputName.observe(viewLifecycleOwner) {
-            val message = if (it) {
-                getString(R.string.error_input_name)
-            } else {
-                null
-            }
-            binding.tilName.error = message
-        }
-
+    private fun observerViewModel() {
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
             onEditingFinishedListener.onEditingFinished()
         }
@@ -125,10 +108,6 @@ class ShopItemFragment: Fragment() {
 
     private fun launchEditMode(){
         viewModel.getShopItem(shopItemId)
-        viewModel.shopItem.observe(viewLifecycleOwner){
-            binding.etName.setText(it.name)
-            binding.etCount.setText(it.count.toString())
-        }
         binding.saveButton.setOnClickListener {
             viewModel.editShopItem(binding.etName.text?.toString(), binding.etCount.text.toString())
         }
