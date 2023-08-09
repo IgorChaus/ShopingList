@@ -6,13 +6,15 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
 import com.example.shopinglist.domain.ShopItem
 import com.example.shopinglist.domain.ShopListRepository
+import javax.inject.Inject
 
-class ShopListRepositoryImpl(
-    application: Application
+class ShopListRepositoryImpl @Inject constructor(
+    private val shopListDao: ShopListDao,
+    private val mapper: ShopListMapper
 ): ShopListRepository  {
 
-    private val shopListDao = AppDataBase.getInstense(application).shopListDao()
-    private val mapper = ShopListMapper()
+ //   private val shopListDao = AppDataBase.getInstense(application).shopListDao()
+ //   private val mapper = ShopListMapper()
 
     override suspend fun addShopItem(shopItem: ShopItem) {
        shopListDao.addShopItem(mapper.mapEntityToDbModel(shopItem))
