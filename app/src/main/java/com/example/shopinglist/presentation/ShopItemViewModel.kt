@@ -1,21 +1,15 @@
 package com.example.shopinglist.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.shopinglist.data.ShopListRepositoryImpl
-import com.example.shopinglist.domain.AddShopItemUseCase
-import com.example.shopinglist.domain.EditShopItemUseCase
-import com.example.shopinglist.domain.GetShopItemUseCase
-import com.example.shopinglist.domain.ShopItem
+import androidx.lifecycle.*
+import com.example.shopinglist.domain.*
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ShopItemViewModel(application: Application): AndroidViewModel(application) {
-
-    private  val repository = ShopListRepositoryImpl(application)
-    private val getShopItemUseCase = GetShopItemUseCase(repository)
-    private val addShopItemUseCase = AddShopItemUseCase(repository)
-    private val editShopItemUseCase = EditShopItemUseCase(repository)
+class ShopItemViewModel @Inject constructor(
+    private val getShopItemUseCase: GetShopItemUseCase,
+    private val addShopItemUseCase: AddShopItemUseCase,
+    private val editShopItemUseCase: EditShopItemUseCase
+) : ViewModel() {
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>
@@ -35,8 +29,11 @@ class ShopItemViewModel(application: Application): AndroidViewModel(application)
 
 
     fun getShopItem(shopItemId: Int){
-        val item = getShopItemUseCase.getShopItem(shopItemId)
-        _shopItem.value = item
+        viewModelScope.launch {
+            val item = getShopItemUseCase.getShopItem(shopItemId)
+            _shopItem.value = item
+        }
+
     }
 
     fun addShopItem(inputName: String?, inputCount: String?){
@@ -44,9 +41,12 @@ class ShopItemViewModel(application: Application): AndroidViewModel(application)
         val count = parseCount(inputCount)
         val fieldsValid = validateInput(name, count)
         if (fieldsValid){
-            val shopItem = ShopItem(name, count, true)
-            addShopItemUseCase.addShopItem(shopItem)
-            finishwork()
+            viewModelScope.launch {
+                val shopItem = ShopItem(name, count, true)
+                addShopItemUseCase.addShopItem(shopItem)
+                finishwork()
+            }
+
         }
 
     }
@@ -58,10 +58,13 @@ class ShopItemViewModel(application: Application): AndroidViewModel(application)
         if (fieldsValid){
             //Редактируем только если _shopItem не NULL
             _shopItem.value?.let {
-                //Получаем объект копированием существующего, но с новыми name и count
-                val item = it.copy(name = name, count = count)
-                editShopItemUseCase.editShopItem(item)
-                finishwork()
+                viewModelScope.launch {
+                    //Получаем объект копированием существующего, но с новыми name и count
+                    val item = it.copy(name = name, count = count)
+                    editShopItemUseCase.editShopItem(item)
+                    finishwork()
+                }
+
             }
         }
     }
@@ -102,5 +105,6 @@ class ShopItemViewModel(application: Application): AndroidViewModel(application)
     private fun finishwork(){
         _shouldCloseScreen.value = Unit
     }
+
 
 }
