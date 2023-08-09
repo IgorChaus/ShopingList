@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.shopinglist.R
 import com.example.shopinglist.domain.ShopItem
-import javax.inject.Inject
 
 class ShopItemActivity: AppCompatActivity(),ShopItemFragment.OnEditingFinishedListener {
 
